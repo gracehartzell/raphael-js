@@ -9,13 +9,88 @@
     <style type="text/css">
         #canvas_container {
             width: 500px;
-            border: 2px solid #aaa;
+            border: 2px dashed #aaa;
+        }
+        #canvas {
+            width: 500px;
+            border: 2px dashed blanchedalmond;
+        }
+        #canvas3 {
+            width: 500px;
+            border: 2px dashed #aaa;
+        }
+        * {
+            padding-left: 5px;
         }
     </style>
     <title>Raphael Practice</title>
 </head>
 <body>
-    <div id="canvas_container"></div>
+    <div id="canvas_container">
+        <h2> Canvas 1 </h2>
+    </div>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css">	
+    </head>
+    <body>
+        <div id="canvas"><h2>Canvas 2</h2></div>
+        <!-- <div id="rslider"></div> -->
+        <script>
+            let width = 0.9*$('#canvas').width() // left this jQuery because learning the library was more important than figuring out how to do this without jQuery #sorrynotsorry
+
+            let h = width
     
+            let paper = new Raphael( document.getElementById('canvas'), width, h ) // setting size of the canvas 
+            
+            let colors = ["#5A906E", "#77c66e", "#6ec6bd", "c6916e","c6bd6e"];
+            
+            let luminance = [0.5, 0.25, -0.25, -0.5];
+            
+            function ColorLuminance(hex, luminance) {
+                hex = String(hex).replace(/[^0-9a-f]/gi, '');
+                if (hex.length < 6) {
+                    hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+                }
+                luminance = luminance || 0;
+            
+                let rgb = "#", c, i;
+                for (i = 0; i < 3; i++) {
+                    c = parseInt(hex.substr(i*2,2), 16);
+                    c = Math.round(Math.min(Math.max(0, c + (c * luminance)), 255)).toString(16);
+                    rgb += ("00"+c).substr(c.length);
+                }
+            
+                return rgb;
+            }
+            
+            let numberRects = 40
+            let maxsize = 0.75*width
+            
+            function makeRects() {						
+                paper.clear()	
+                
+                let sizeChange = maxsize/numberRects	
+                let cstart = -1						
+            
+                for (i = 0; i < numberRects; i++) {		
+                    if ( i%4 == 0 ) { cstart++ }				
+                    cstart = cstart % colors.length
+                    
+                    let thisRectSize = maxsize - i*sizeChange
+                        
+                    r = paper.rect( width/2 - thisRectSize/2, width/2 - thisRectSize/2, thisRectSize, thisRectSize, 10)
+                    r.attr({'transform':'r'+(i*5)})			
+                    r.attr({'fill': ColorLuminance( colors[cstart], luminance[i%(luminance.length)]), 'stroke-width':0})
+                }
+            }
+            
+            makeRects()
+            
+        </script>
+        <div id="canvas3"><h2>Canvas 3</h2></div>
+    </body>						
 </body>
 </html>

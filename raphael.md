@@ -10,6 +10,9 @@ let canvas = new Raphael(x, y, width, height);
 // Method 2:
 let canvas = new Raphael(element, width, height);
 ```
+The sites that I found varied as to whether you should do all javascript inside the HTML file or add an external, I chose to do it externally. 
+
+
 
 Building my first Raphael creation: 
     1. Created a canvas on the HTML page for my design to be displayed.
